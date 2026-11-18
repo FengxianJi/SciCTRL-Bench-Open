@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/FengxianJi/SciCTRL-Bench/blob/main/SciCTRLFramework/eval/run_record.schema.json",
+  "title": "SciCTRL evaluator-owned run record",
+  "type": "object",
+  "required": ["case_id", "framework", "model_snapshot", "seed"],
+  "properties": {
+    "case_id": {"type": "string"},
+    "framework": {"type": "string"},
+    "model_snapshot": {"type": "string"},
+    "seed": {"type": ["string", "integer"]},
+    "predicted_revision": {"type": "boolean"},
+    "predicted_factor_ids": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "predicted_factor_categories": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "valid_repair": {"type": "boolean"},
+    "evidence_verified": {"type": "boolean"},
+    "integrity_verified": {"type": "boolean"},
+    "revision_confidence": {"type": "number", "minimum": 0, "maximum": 1},
+    "run_status": {
+      "type": "string",
+      "enum": ["success", "failed", "timeout", "skipped", "parse_error"]
+    },
+    "total_tokens": {"type": "number", "minimum": 0},
+    "cost_usd": {"type": "number", "minimum": 0},
+    "elapsed_seconds": {"type": "number", "minimum": 0},
+    "trajectory_path": {"type": "string"},
+    "evaluator_version": {"type": "string"}
+  },
+  "allOf": [
+    {
+      "if": {
+        "required": ["run_status"],
+        "properties": {"run_status": {"const": "success"}}
+      },
+      "then": {
+        "required": [
+          "predicted_revision",
+          "predicted_factor_ids",
+          "valid_repair",
+          "evidence_verified",
+          "integrity_verified"
+        ]
+      }
+    },
+    {
+      "if": {"not": {"required": ["run_status"]}},
+      "then": {
+        "required": [
+          "predicted_revision",
+          "predicted_factor_ids",
+          "valid_repair",
+          "evidence_verified",
+          "integrity_verified"
+        ]
+      }
+    }
+  ],
+  "additionalProperties": false
+}

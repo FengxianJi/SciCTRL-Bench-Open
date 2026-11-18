@@ -1,0 +1,39 @@
+{
+  "schema_version": "scictrl-pilot-summary-0.1",
+  "source_record": "EXPERIMENT_RESULTS_20260909.md (project working record)",
+  "status": "diagnostic_pilot_only",
+  "not_a_matched_rsi_framework_comparison": true,
+  "results": {
+    "cpu_diagnostic_tasks": {
+      "passed": 32,
+      "total": 32,
+      "checks": [
+        "numeric_validation",
+        "final_source_validation"
+      ]
+    },
+    "original_proposal_blind_test": {
+      "correct": 16,
+      "total": 16,
+      "balanced_accuracy": 1.0
+    },
+    "rewritten_proposal_blind_test": {
+      "correct": 14,
+      "total": 16,
+      "balanced_accuracy": 0.875,
+      "auc": 0.883
+    },
+    "cpu_control_stress": {
+      "families": 8,
+      "implementations_per_family": 4,
+      "hidden_instances_per_implementation": 3,
+      "executions": 96
+    }
+  },
+  "limitations": [
+    "Programmatic diagnostic tasks do not establish end-to-end scientific research ability.",
+    "Proposal discrimination reached ceiling on the original-proposal blind set.",
+    "No paired comparison of two native recursive-self-improvement frameworks is included.",
+    "Task-level traces and private evaluator labels are not included in this public code release."
+  ]
+}

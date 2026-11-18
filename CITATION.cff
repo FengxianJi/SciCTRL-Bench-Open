@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use SciCTRL-Bench, please cite the repository and the accompanying paper when available."
+title: "SciCTRL-Bench: Controlled Feedback–Revision Evaluation for AI Scientists"
+authors:
+  - family-names: Ji
+    given-names: Fengxian
+version: 0.1.0
+date-released: 2026-11-18
+repository-code: https://github.com/FengxianJi/SciCTRL-Bench-Open
+license: MIT

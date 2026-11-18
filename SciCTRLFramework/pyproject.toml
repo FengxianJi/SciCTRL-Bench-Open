@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "scictrl-csfi"
+version = "0.1.0"
+description = "Validated Scientific Revision Opportunity framework for SciCTRL-Bench"
+requires-python = ">=3.10"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "PyYAML>=6"]
+literature = ["PyMuPDF>=1.24", "requests>=2.31"]
+
+[project.scripts]
+scictrl-synthesize-vsro = "scictrl.synthesize_vsro:main"
+scictrl-synthesize-cpu-diagnostic = "scictrl.synthesize_cpu_diagnostic:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["scictrl*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = [".", "../Benchmark", "../Method"]

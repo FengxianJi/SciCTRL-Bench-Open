@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://scictrl.example/schema/public-case-0.8.0.json",
+  "title": "SciCTRL VSRO public case",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "case_id",
+    "layer",
+    "domain",
+    "domain_name",
+    "agent_input"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.8.0"},
+    "case_id": {"type": "string", "pattern": "^scictrl-[a-f0-9]{16}$"},
+    "layer": {"enum": ["layer1_state", "layer2_idea"]},
+    "domain": {"type": "string"},
+    "domain_name": {"type": "string"},
+    "agent_input": {
+      "type": "object",
+      "required": [
+        "task",
+        "fixed_constraints",
+        "available_tools",
+        "task_contract",
+        "research_interface",
+        "required_output"
+      ],
+      "properties": {
+        "task": {"type": "string", "minLength": 1},
+        "fixed_constraints": {"type": "object"},
+        "available_tools": {
+          "type": "array",
+          "items": {"type": "string"},
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "task_contract": {"type": "object"},
+        "research_interface": {
+          "type": "object",
+          "required": ["operations", "request_schema", "budget", "feedback_policy"],
+          "properties": {
+            "operations": {
+              "const": ["inspect_artifact", "run_analysis", "execute_experiment", "compare_results"]
+            },
+            "request_schema": {"type": "object"},
+            "budget": {"type": "object"},
+            "feedback_policy": {"type": "string", "minLength": 1}
+          },
+          "additionalProperties": false
+        },
+        "required_output": {"type": "object"},
+        "state": {
+          "type": "object",
+          "required": ["checkpoint_stage", "idea", "experiment_summary", "observations", "artifact_inventory"],
+          "properties": {
+            "checkpoint_stage": {"type": "string"},
+            "idea": {"type": "object"},
+            "experiment_summary": {"type": "string"},
+            "observations": {"type": "array"},
+            "artifact_inventory": {
+              "const": ["research_idea", "research_plan", "run_manifest", "implementation", "raw_results", "analysis", "scientific_claims", "audit_log"]
+            }
+          },
+          "additionalProperties": false
+        },
+        "idea": {"type": "object"},
+        "environment_entrypoint": {"type": "object"}
+      },
+      "additionalProperties": false
+    }
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"layer": {"const": "layer1_state"}}},
+      "then": {
+        "properties": {
+          "agent_input": {
+            "required": ["state"],
+            "not": {"anyOf": [{"required": ["idea"]}, {"required": ["environment_entrypoint"]}]}
+          }
+        }
+      }
+    },
+    {
+      "if": {"properties": {"layer": {"const": "layer2_idea"}}},
+      "then": {
+        "properties": {
+          "agent_input": {
+            "required": ["idea", "environment_entrypoint"],
+            "not": {"required": ["state"]}
+          }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}
